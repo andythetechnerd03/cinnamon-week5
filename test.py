@@ -86,7 +86,7 @@ if __name__ == '__main__':
     print()
     print("Top 1 err: ", 1 - correct_1 / len(cifar100_test_loader.dataset))
     print("Top 5 err: ", 1 - correct_5 / len(cifar100_test_loader.dataset))
-    print("Average inference time per image: ", total_time)
+    print(f"Average inference time per image: {total_time} miliseconds")
     print("Parameter numbers: {}".format(sum(p.numel() for p in net.parameters())))
     print(prof.key_averages().table(sort_by="self_cpu_memory_usage", row_limit=10))
 
