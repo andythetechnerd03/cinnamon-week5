@@ -7,7 +7,8 @@ of a model
 
 author baiyu
 """
-
+import torchvision.models as models
+from torch.profiler import profile, record_function, ProfilerActivity
 import argparse
 
 from matplotlib import pyplot as plt
@@ -45,6 +46,7 @@ if __name__ == '__main__':
     correct_1 = 0.0
     correct_5 = 0.0
     total = 0
+    total_time = 0
 
     with torch.no_grad():
         for n_iter, (image, label) in enumerate(cifar100_test_loader):
@@ -53,11 +55,20 @@ if __name__ == '__main__':
             if args.gpu:
                 image = image.cuda()
                 label = label.cuda()
-                print('GPU INFO.....')
-                print(torch.cuda.memory_summary(), end='')
+                #print('GPU INFO.....')
+                #print(torch.cuda.memory_summary(), end='')
+            # Measure time
+            starter, ender = torch.cuda.Event(enable_timing=True),
+            torch.cuda.Event(enable_timing=True)
+            starter.record()
+            with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_shapes=True) as prof:
+                output = net(image)
+            
+            ender.record()
+            torch.cuda.synchronize()
+            curr_time = starter.elapsed_time(ender)/10000
+            total_time += curr_time
 
-
-            output = net(image)
             _, pred = output.topk(5, 1, largest=True, sorted=True)
 
             label = label.view(label.size(0), -1).expand_as(pred)
@@ -76,4 +87,7 @@ if __name__ == '__main__':
     print()
     print("Top 1 err: ", 1 - correct_1 / len(cifar100_test_loader.dataset))
     print("Top 5 err: ", 1 - correct_5 / len(cifar100_test_loader.dataset))
+    print("Average inference time per image: ", total_time)
     print("Parameter numbers: {}".format(sum(p.numel() for p in net.parameters())))
+    print(prof.key_averages().table(sort_by="self_cpu_memory_usage", row_limit=10))
+
