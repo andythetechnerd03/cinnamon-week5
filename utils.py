@@ -153,10 +153,8 @@ def get_network(args):
         from models.stochasticdepth import stochastic_depth_resnet101
         net = stochastic_depth_resnet101()
     elif args.net == 'quantized_googlenet':
-        from models.googlenet import googlenet
-        gnet = googlenet()
         from models.quantized_googlenet import quantized_googlenet
-        net, qm = quantized_googlenet(gnet)
+        net, qm = quantized_googlenet()
         if args.gpu: #use_gpu
             net = net.cuda()
             qm = qm.cuda()
