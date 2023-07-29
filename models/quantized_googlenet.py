@@ -129,7 +129,7 @@ class Quantized_Googlenet(nn.Module):
 def quantized_googlenet():
     quantized_model = Quantized_Googlenet()
 
-    quantized_model._eval()
+    quantized_model.eval()
 
     quantized_model.qconfig = torch.ao.quantization.get_default_qconfig('x86')
 
