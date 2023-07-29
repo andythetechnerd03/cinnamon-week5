@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from torch.ao.nn.quantized import FloatFunctional
 
 class Inception(nn.Module):
     def __init__(self, input_channels, n1x1, n3x3_reduce, n3x3, n5x5_reduce, n5x5, pool_proj):
@@ -48,7 +49,8 @@ class Inception(nn.Module):
         )
 
     def forward(self, x):
-        return torch.cat([self.b1(x), self.b2(x), self.b3(x), self.b4(x)], dim=1)
+        ff = FloatFunctional()
+        return ff.cat([self.b1(x), self.b2(x), self.b3(x), self.b4(x)], dim=1)
 
 
 class Quantized_Googlenet(nn.Module):
