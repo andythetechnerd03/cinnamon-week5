@@ -66,7 +66,8 @@ if __name__ == '__main__':
             starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
             starter.record()
             with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA], record_shapes=True) as prof:
-                output = net(image)
+                with record_function("model_inference"):
+                    output = net(image)
             
             ender.record()
             torch.cuda.synchronize()
