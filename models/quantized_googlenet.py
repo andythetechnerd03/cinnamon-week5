@@ -18,4 +18,14 @@ class Quantized_Googlenet(nn.Module):
         return x
     
 def quantized_googlenet(model):
-    return Quantized_Googlenet(model)
+    quantized_model = Quantized_Googlenet(model)
+
+    quantized_model.eval()
+
+    quantized_model.qconfig = torch.ao.quantization.get_default_qconfig('x86')
+
+    quantized_model = torch.ao.quantization.prepare(quantized_model)
+
+    model_int8 = torch.ao.quantization.convert(quantized_model)
+
+    return model_int8, quantized_model

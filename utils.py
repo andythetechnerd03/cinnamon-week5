@@ -156,7 +156,11 @@ def get_network(args):
         from models.googlenet import googlenet
         gnet = googlenet()
         from models.quantized_googlenet import quantized_googlenet
-        net = quantized_googlenet(gnet)
+        net, qm = quantized_googlenet(gnet)
+        if args.gpu: #use_gpu
+            net = net.cuda()
+            qm = qm.cuda()
+        return net, qm
 
     else:
         print('the network name you have entered is not supported yet')

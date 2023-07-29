@@ -29,7 +29,9 @@ if __name__ == '__main__':
     parser.add_argument('-b', type=int, default=16, help='batch size for dataloader')
     args = parser.parse_args()
 
-    net = get_network(args)
+    if args.net == 'quantized_googlenet':
+        net, qm = get_network(args)
+    else: net = get_network(args)
 
     cifar100_test_loader = get_test_dataloader(
         settings.CIFAR100_TRAIN_MEAN,
@@ -57,6 +59,8 @@ if __name__ == '__main__':
                 label = label.cuda()
                 #print('GPU INFO.....')
                 #print(torch.cuda.memory_summary(), end='')
+            
+            if args.net == 'quantized_googlenet': qm(image)
             # Measure time
             starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
             starter.record()
