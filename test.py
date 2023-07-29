@@ -62,7 +62,6 @@ if __name__ == '__main__':
             
             if args.net == 'quantized_googlenet':
                 qm(image)
-                qm(label)
             # Measure time
             starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
             starter.record()
