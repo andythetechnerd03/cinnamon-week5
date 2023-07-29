@@ -153,8 +153,10 @@ def get_network(args):
         from models.stochasticdepth import stochastic_depth_resnet101
         net = stochastic_depth_resnet101()
     elif args.net == 'quantized_googlenet':
+        from models.googlenet import googlenet
+        gnet = googlenet()
         from models.quantized_googlenet import quantized_googlenet
-        net = quantized_googlenet()
+        net = quantized_googlenet(gnet)
 
     else:
         print('the network name you have entered is not supported yet')

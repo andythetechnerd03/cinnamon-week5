@@ -17,5 +17,5 @@ class Quantized_Googlenet(nn.Module):
 
         return x
     
-def quantized_googlenet():
-    return Quantized_Googlenet(GoogleNet())
+def quantized_googlenet(model):
+    return Quantized_Googlenet(model)
