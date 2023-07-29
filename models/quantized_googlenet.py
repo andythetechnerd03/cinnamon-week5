@@ -99,7 +99,6 @@ class Quantized_Googlenet(nn.Module):
     def forward(self, x):
         x = self.quant(x)
         x = self.prelayer(x)
-        x = self.dequant(x)
         x = self.maxpool(x)
         x = self.a3(x)
         x = self.b3(x)
