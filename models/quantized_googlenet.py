@@ -143,7 +143,7 @@ def quantized_googlenet():
     ['prelayer.3', 'prelayer.4', 'prelayer.5'],
     ['prelayer.6', 'prelayer.7', 'prelayer.8'],
 
-    '''['a3.b1.0', 'a3.b1.1', 'a3.b1.2'],
+    ['a3.b1.0', 'a3.b1.1', 'a3.b1.2'],
     ['a3.b2.0', 'a3.b2.1', 'a3.b2.2'],
     ['a3.b2.3', 'a3.b2.4', 'a3.b2.5'],
     ['a3.b3.0', 'a3.b3.1', 'a3.b3.2'],
@@ -213,7 +213,7 @@ def quantized_googlenet():
     ['b5.b3.0', 'b5.b3.1', 'b5.b3.2'],
     ['b5.b3.3', 'b5.b3.4', 'b5.b3.5'],
     ['b5.b3.6', 'b5.b3.7', 'b5.b3.8'],
-    ['b5.b4.1', 'b5.b4.2', 'b5.b4.3']'''
+    ['b5.b4.1', 'b5.b4.2', 'b5.b4.3']
     ]
 
     quantized_model_fused = torch.quantization.fuse_modules(quantized_model, modules_to_fuse)
