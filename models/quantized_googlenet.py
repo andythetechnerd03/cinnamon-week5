@@ -93,12 +93,12 @@ class Quantized_Googlenet(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.dropout = nn.Dropout2d(p=0.4)
         self.linear = nn.Linear(1024, num_class)
-        self.quant = torch.ao.quantization.QuantStub()
-        self.dequant = torch.ao.quantization.DeQuantStub()
+        self.quant = torch.quantization.QuantStub()
+        self.dequant = torch.quantization.DeQuantStub()
     
     def forward(self, x):
+        x = torch.quantize_per_tensor(x, 0.1, 10, torch.quint8)
         x = self.prelayer(x)
-
         x = self.maxpool(x)
         x = self.a3(x)
         x = self.b3(x)
@@ -123,6 +123,8 @@ class Quantized_Googlenet(nn.Module):
         x = self.avgpool(x)
         x = self.dropout(x)
         x = x.view(x.size()[0], -1)
+        x = torch.dequantize(x)
+
         x = self.linear(x)
         
 
@@ -133,7 +135,7 @@ def quantized_googlenet():
 
     quantized_model.eval()
 
-    quantized_model.prelayer.qconfig = torch.ao.quantization.get_default_qconfig('x86')
+    quantized_model.prelayer.qconfig = torch.quantization.get_default_qconfig('x86')
 
     
     modules_to_fuse = [
@@ -142,10 +144,10 @@ def quantized_googlenet():
     ['prelayer.6', 'prelayer.7', 'prelayer.8'],
     ]
 
-    quantized_model_fused = torch.ao.quantization.fuse_modules(quantized_model, modules_to_fuse)
+    quantized_model_fused = torch.quantization.fuse_modules(quantized_model, modules_to_fuse)
 
-    quantized_model = torch.ao.quantization.prepare(quantized_model_fused)
+    quantized_model = torch.quantization.prepare(quantized_model_fused)
 
-    model_int8 = torch.ao.quantization.convert(quantized_model)
+    model_int8 = torch.quantization.convert(quantized_model)
 
     return model_int8, quantized_model
