@@ -152,6 +152,9 @@ def get_network(args):
     elif args.net == 'stochasticdepth101':
         from models.stochasticdepth import stochastic_depth_resnet101
         net = stochastic_depth_resnet101()
+    elif args.net == 'distill_googlenet':
+        from models.distil_googlenet import distil_googlenet
+        net = distil_googlenet()
     elif args.net == 'quantized_googlenet':
         from models.quantized_googlenet import quantized_googlenet
         net, qm = quantized_googlenet()
