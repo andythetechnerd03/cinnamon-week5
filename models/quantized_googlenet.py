@@ -97,9 +97,7 @@ class Quantized_Googlenet(nn.Module):
         self.dequant = torch.ao.quantization.DeQuantStub()
     
     def forward(self, x):
-        x = torch.quantize_per_tensor(x)
         x = self.prelayer(x)
-        x = torch.dequantize(x)
 
         x = self.maxpool(x)
         x = self.a3(x)
