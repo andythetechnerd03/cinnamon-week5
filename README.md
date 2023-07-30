@@ -44,16 +44,16 @@ Training the pruned model doesn’t increase the memory and time cost as it was 
 ## Results
 Here is a quick summary of the results: 
 
-| Criterion / Model | Base Model |	Unstructured Pruning Model |	Structured Pruning Model (after training) |
+| Criterion / Model | [Base Model](https://github.com/andythetechnerd03/cinnamon-week5/blob/master/googlenet-196-best.pth) |	[Unstructured Pruning Model](https://github.com/andythetechnerd03/cinnamon-week5/blob/master/pruned_googlenet.pth) |	[Structured Pruning Model (after training)](https://github.com/andythetechnerd03/cinnamon-week5/blob/master/structured_pruned_model.pth) |
 | ------------------|:-----------:|:---------------------------:|:------------------------------------------:|
-|Parameters|6.4M|6.4M|4.09M|
-|File Size (.pth)|25MB|25MB|16MB|
-|Top-1 Error|22.96%|27.5% (delta 4.54% from base)|25.85% (delta 2.89% from base)| 
-|Top-5 Error|6.19%|6.61%|6.91%|
-|Runtime Memory|58.66 MB|58.66 MB|46.98 MB|
-|Inference Time/Image|15.74 ms|15.6 ms|16.7 ms|
-|Total Time CPU|27.395 ms|26.788 ms|31.761 ms|
-|Total Time CUDA|12.64 ms|12.64 ms|10.79 ms|
+|Parameters|6.4M|6.4M|**4.09M**|
+|File Size (.pth)|25MB|25MB|**16MB**|
+|Top-1 Error|**22.96%**|27.5% (delta 4.54% from base)|25.85% (delta 2.89% from base)| 
+|Top-5 Error|**6.19%**|6.61%|6.91%|
+|Runtime Memory|58.66 MB|58.66 MB|**46.98 MB**|
+|Inference Time/Image|15.74 ms|**15.6 ms**|16.7 ms|
+|Total Time CPU|27.395 ms|**26.788 ms**|31.761 ms|
+|Total Time CUDA|12.64 ms|12.64 ms|**10.79 ms**|
 
 - Unstructured Pruning does not save a lot of memory consumption and time consumption because it has the same number of parameters as the base model, as it uses a masking layer to cancel out the nodes.
 - Structured Pruning, on the other hand, has 20% less parameters (4.09M) due to nodes being removed completely. However, this model needs to be re-trained so that accuracy score can go up. Due to time constraints, the model can only be trained to an extent.
